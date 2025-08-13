@@ -1,448 +1,287 @@
 
+<!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Calculadora de Cláusulas</title>
+  <title>[Tu Marca] – Jardinería en [Tu Ciudad] | Mantenimiento, podas, riego</title>
+  <meta name="description" content="Servicios de jardinería en [Tu Ciudad]: creación y mantenimiento de jardines, poda y tala de árboles, desbroces y riego automático. Presupuesto gratuito." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
   <style>
     :root{
-      --bg:#0b1220; --card:#111a2b; --accent:#5bbcff; --text:#e8eef8; --muted:#94a3b8;
-      --ok:#22c55e; --warn:#f59e0b; --err:#ef4444; --ring:rgba(91,188,255,.45);
+      --green:#245b2a; /* principal (inspirado en vigojardin) */
+      --green-2:#2f7b36; /* acento */
+      --beige:#f4f6f3;   /* fondo suave */
+      --ink:#1f2937;     /* texto */
     }
     *{box-sizing:border-box}
-    body{margin:0; font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,"Helvetica Neue",Arial; background: radial-gradient(1200px 800px at 20% -10%, #0e223f 0%, transparent 60%), var(--bg); color:var(--text)}
-    .wrap{min-height:100dvh; display:grid; place-items:center; padding:24px}
-    .card{width:100%; max-width:1000px; background:linear-gradient(180deg, rgba(255,255,255,0.02), transparent), var(--card); border:1px solid rgba(255,255,255,0.06); border-radius:20px; box-shadow:0 10px 30px rgba(0,0,0,.35); padding:24px;}
-    .title{font-size:clamp(22px, 2.4vw, 28px); font-weight:800; letter-spacing:.2px; display:flex; align-items:center; gap:10px;}
-    .title .dot{width:10px; height:10px; background:var(--accent); border-radius:50%; box-shadow:0 0 18px var(--accent)}
-    p{color:var(--muted); margin:.5rem 0 1rem}
-
-    .row{display:flex; flex-wrap:wrap; gap:12px; align-items:end}
-    .field{flex:1 1 280px}
-    label{display:block; font-size:14px; color:var(--muted); margin:0 0 6px}
-    input[type=text], input[type=number]{width:100%; padding:12px 14px; border-radius:12px; border:1px solid rgba(255,255,255,0.08); background:#0c1526; color:var(--text); outline:none; transition:.15s ease; font-size:15px}
-    input::placeholder{color:#6b7a90}
-    input:focus{border-color:var(--accent); box-shadow:0 0 0 6px var(--ring)}
-
-    .btn{appearance:none; border:0; border-radius:12px; padding:12px 14px; font-weight:700; cursor:pointer; background:linear-gradient(180deg, #63c6ff, #3aa8f7); color:#001528; box-shadow:0 8px 24px rgba(74, 170, 255, .35); transition:transform .05s ease, filter .15s ease}
-    .btn:active{transform:translateY(1px)}
-    .muted-btn{background:#0f1a2d; color:var(--text); border:1px solid rgba(255,255,255,.1)}
-    .danger{background:linear-gradient(180deg, #ff6b6b, #ef4444); color:white}
-
-    .result{margin-top:18px; padding:16px; border-radius:14px; border:1px dashed rgba(255,255,255,0.15); background:rgba(12,21,38,.55)}
-    .money{font-size:clamp(22px, 3vw, 30px); font-weight:900; letter-spacing:.3px}
-    .rule{font-size:14px; color:var(--muted)}
-    .bad{color:var(--err)}
-
-    .grid{display:grid; grid-template-columns:repeat(auto-fit, minmax(220px,1fr)); gap:10px; margin-top:18px}
-    .badge{padding:10px 12px; background:#0f1a2d; border:1px solid rgba(255,255,255,.08); border-radius:12px; font-size:13px; color:var(--muted)}
-
-    .panel{margin-top:20px; padding:14px; border-radius:14px; background:#0c1526; border:1px solid rgba(255,255,255,.08)}
-    .panel h2{margin:0 0 8px; font-size:16px}
-    .slider-row{display:grid; grid-template-columns:1fr auto; gap:12px; align-items:center; margin:10px 0}
-    .slider-row input[type=range]{width:100%}
-    .chips{display:flex; flex-wrap:wrap; gap:8px; margin-top:8px}
-    .chip{font-size:12px; padding:6px 10px; border-radius:999px; background:#0f1a2d; border:1px solid rgba(255,255,255,.1); color:var(--muted)}
-
-    table{width:100%; border-collapse:separate; border-spacing:0 8px; margin-top:12px}
-    th, td{padding:10px 12px; text-align:left; font-size:14px}
-    thead th{color:var(--muted); font-weight:600}
-    tbody tr{background:#0f1a2d; border:1px solid rgba(255,255,255,.08)}
-    tbody tr td:first-child{border-top-left-radius:10px; border-bottom-left-radius:10px}
-    tbody tr td:last-child{border-top-right-radius:10px; border-bottom-right-radius:10px}
-
-    footer{margin-top:20px; font-size:12px; color:#7f8da3}
+    html,body{margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial,sans-serif;color:var(--ink);}
+    a{color:inherit;text-decoration:none}
+    img{max-width:100%;display:block}
+    .container{max-width:1160px;margin-inline:auto;padding:0 1.25rem}
+    /* Header */
+    header{position:sticky;top:0;z-index:50;background:#fff;border-bottom:1px solid #e5e7eb}
+    .nav{display:flex;align-items:center;justify-content:space-between;height:64px}
+    .brand{display:flex;align-items:center;gap:.6rem;font-weight:700;color:var(--green)}
+    .brand .leaf{width:28px;height:28px;border-radius:8px;background:conic-gradient(from 180deg,var(--green),var(--green-2));display:inline-block}
+    .menu{display:flex;gap:1.2rem;align-items:center}
+    .menu a{font-weight:600}
+    .cta{background:var(--green);color:#fff;padding:.6rem 1rem;border-radius:.7rem;display:inline-flex;gap:.5rem;align-items:center}
+    .burger{display:none;background:none;border:none;font-size:1.6rem}
+    /* Hero */
+    .hero{background:linear-gradient(180deg,rgba(36,91,42,.08),rgba(36,91,42,.02)), url('https://images.unsplash.com/photo-1518860308377-870b866b159c?q=80&w=1600&auto=format&fit=crop') center/cover no-repeat;}
+    .hero .wrap{backdrop-filter:saturate(110%) brightness(1);padding:96px 0}
+    .badge{display:inline-block;background:#e8f2ea;color:var(--green);font-weight:700;padding:.35rem .7rem;border-radius:999px;font-size:.85rem}
+    .hero h1{font-size: clamp(2rem, 4vw + 1rem, 3.2rem);line-height:1.1;margin:.6rem 0 1rem;color:#0f172a}
+    .hero p{max-width:750px;font-size:1.1rem}
+    .actions{margin-top:1.2rem;display:flex;gap:.8rem;flex-wrap:wrap}
+    .btn{border-radius:.75rem;padding:.9rem 1.1rem;font-weight:700;border:2px solid transparent}
+    .btn-primary{background:var(--green);color:#fff}
+    .btn-outline{border-color:var(--green);color:var(--green)}
+    /* Services */
+    section{padding:72px 0}
+    .section-head{display:flex;align-items:flex-end;justify-content:space-between;gap:1rem;margin-bottom:28px}
+    h2{font-size: clamp(1.6rem, 2.2vw + .8rem, 2.2rem);margin:0}
+    .grid{display:grid;grid-template-columns:repeat(12,1fr);gap:1rem}
+    .card{grid-column:span 12;background:#fff;border:1px solid #e5e7eb;border-radius:1rem;padding:1rem;display:flex;gap:1rem;align-items:center}
+    .icon{width:48px;height:48px;border-radius:12px;background:radial-gradient(circle at 30% 30%,#fff, #dbeee0);display:grid;place-items:center;color:var(--green);font-weight:900}
+    .card h3{margin:.2rem 0 .3rem}
+    @media (min-width:768px){
+      .card{grid-column:span 6}
+    }
+    @media (min-width:1024px){
+      .card{grid-column:span 4}
+    }
+    .muted{color:#475569}
+    /* Feature blocks */
+    .feature{display:grid;gap:2rem;align-items:center}
+    .feature img{border-radius:1rem}
+    @media (min-width:900px){
+      .feature{grid-template-columns:1.1fr 1fr}
+      .feature.reverse{grid-template-columns:1fr 1.1fr}
+    }
+    .list{margin:0;padding-left:1.1rem}
+    .list li{margin:.3rem 0}
+    /* Gallery */
+    .gallery{display:grid;gap:1rem;grid-template-columns:repeat(2,1fr)}
+    @media (min-width:900px){.gallery{grid-template-columns:repeat(4,1fr)}}
+    .gallery img{aspect-ratio:4/3;object-fit:cover;border-radius:.8rem}
+    /* Contact */
+    #contacto{background:var(--beige)}
+    form{display:grid;gap:.8rem;max-width:680px}
+    input,textarea{width:100%;padding:.9rem;border:1px solid #cbd5e1;border-radius:.7rem;font:inherit}
+    .legal{font-size:.85rem;color:#64748b}
+    /* Footer */
+    footer{background:#0b1f0e;color:#cfe6d2}
+    .foot{display:grid;gap:1rem;padding:36px 0}
+    @media (min-width:900px){.foot{grid-template-columns:1.2fr 1fr 1fr}}
+    .foot a{color:#e5f6e8}
   </style>
+  <script>
+    // WhatsApp helper: replace with your number (international format, no +)
+    const WHATSAPP = '34999999999';
+    document.addEventListener('DOMContentLoaded',()=>{
+      document.querySelectorAll('[data-wa]').forEach(el=>{
+        el.href = `https://wa.me/${WHATSAPP}?text=${encodeURIComponent('Hola, me gustaría pedir un presupuesto de jardinería.')}`;
+      });
+      const burger=document.getElementById('burger');
+      const nav=document.getElementById('navlinks');
+      burger?.addEventListener('click',()=>{
+        nav.style.display = nav.style.display==='flex'?'none':'flex';
+      });
+    });
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context":"https://schema.org",
+    "@type":"GardenService",
+    "name":"[Tu Marca]",
+    "areaServed":"[Tu Ciudad]",
+    "url":"https://tu-dominio.com",
+    "telephone":"+34 999 999 999",
+    "sameAs":["https://www.instagram.com/tu_marca","https://www.facebook.com/tu_marca"],
+    "address":{"@type":"PostalAddress","addressLocality":"[Tu Ciudad]","addressRegion":"[Provincia]","addressCountry":"ES"}
+  }
+  </script>
 </head>
 <body>
-  <div class="wrap">
-    <section class="card">
-      <h1 class="title"><span class="dot"></span> Calculadora de Cláusulas</h1>
-      <p>Escribe el <strong>valor del jugador</strong>; el campo se formatea con puntos al vuelo. Puedes <strong>ajustar porcentajes</strong> con el deslizador, y ahora también <strong>editar/crear tramos</strong> (dividir un tramo, cambiar límites y porcentajes). Todo se guarda en tu navegador.</p>
-
-      <div class="row">
-        <div class="field">
-          <label for="valor">Valor del jugador (EUR)</label>
-          <input id="valor" type="text" inputmode="numeric" autocomplete="off" placeholder="p. ej., 25.555.555" />
+  <!-- Header -->
+  <header>
+    <div class="container nav">
+      <a class="brand" href="#inicio"><span class="leaf"></span> <span>[Tu Marca]</span></a>
+      <nav>
+        <button class="burger" id="burger">☰</button>
+        <div class="menu" id="navlinks">
+          <a href="#servicios">Servicios</a>
+          <a href="#trabajos">Trabajos</a>
+          <a href="#sobre">Sobre nosotros</a>
+          <a href="#contacto" class="cta">Contactar</a>
         </div>
-        <button id="calc" class="btn">Calcular</button>
-        <button id="reset" class="btn muted-btn">Limpiar</button>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <section id="inicio" class="hero">
+    <div class="container wrap">
+      <span class="badge">Jardinería en [Tu Ciudad]</span>
+      <h1>Creamos y cuidamos jardines bonitos, funcionales y de bajo mantenimiento</h1>
+      <p>Especialistas en <strong>creación y mantenimiento de jardines</strong>, <strong>poda y tala</strong>, <strong>desbroces</strong> y <strong>riego automático</strong>. Presupuesto gratuito y trato cercano.</p>
+      <div class="actions">
+        <a class="btn btn-primary" data-wa target="_blank" rel="noopener">Pedir presupuesto por WhatsApp</a>
+        <a class="btn btn-outline" href="#servicios">Ver servicios</a>
       </div>
+    </div>
+  </section>
 
-      <div id="out" class="result" hidden>
-        <div class="money" id="clausula"></div>
-        <div class="rule" id="regla"></div>
+  <!-- Servicios -->
+  <section id="servicios">
+    <div class="container">
+      <div class="section-head">
+        <h2>Nuestros servicios de jardinería</h2>
+        <a class="cta" href="#contacto">Solicitar info</a>
       </div>
-
-      <div id="badges" class="grid" aria-hidden="true"></div>
-
-      <section class="panel" id="ajustes">
-        <h2>Ajuste rápido del porcentaje del tramo actual</h2>
-        <p class="rule">Mueve el deslizador (100%–200%) para previsualizar la cláusula del <em>valor actual</em>. Pulsa <strong>Guardar</strong> para aplicar al tramo en uso.</p>
-        <div class="chips">
-          <span class="chip">Tramo actual: <strong id="tramoActual">—</strong></span>
-          <span class="chip">Porcentaje actual: <strong id="pctActual">—</strong></span>
-          <span class="chip">Previsualización: <strong id="preview">—</strong></span>
-        </div>
-        <div class="slider-row">
-          <input id="slider" type="range" min="100" max="200" step="1" value="110" />
-          <div style="min-width:80px;text-align:right"><span id="sliderVal">110</span> %</div>
-        </div>
-        <div class="row" style="margin-top:8px">
-          <button id="guardar" class="btn">Guardar para este tramo</button>
-        </div>
-      </section>
-
-      <section class="panel" id="editor">
-        <h2>Editor de tramos (límites y porcentajes)</h2>
-        <p class="rule">Puedes <strong>reducir un tramo</strong> cambiando su máximo y luego <strong>crear otro tramo</strong> dividiéndolo por el punto que elijas. Los límites siempre quedan contiguos y sin solaparse.</p>
-        <table>
-          <thead>
-            <tr>
-              <th>#</th>
-              <th>Mínimo (€)</th>
-              <th>Máximo (€)</th>
-              <th>Tipo</th>
-              <th>Valor</th>
-              <th>Acciones</th>
-            </tr>
-          </thead>
-          <tbody id="tiersTable"></tbody>
-        </table>
-        <div class="row" style="margin-top:8px">
-          <div class="field">
-            <label for="splitValue">Dividir tramo por este valor (€)</label>
-            <input id="splitValue" type="text" placeholder="p. ej., 12.000.000" />
+      <div class="grid">
+        <article class="card">
+          <div class="icon">🌱</div>
+          <div>
+            <h3>Creación de jardines</h3>
+            <p class="muted">Diseño y obra: césped natural o tepe, jardineras, rocallas, parterres, selección de plantas y setos.</p>
           </div>
-          <button id="splitBtn" class="btn">Dividir tramo seleccionado</button>
-          <button id="defaultsBtn" class="btn muted-btn">Restaurar valores por defecto</button>
+        </article>
+        <article class="card">
+          <div class="icon">✂️</div>
+          <div>
+            <h3>Poda y tala de árboles</h3>
+            <p class="muted">Poda en altura con medios técnicos y retiradas seguras. Gestión de restos en planta de reciclaje.</p>
+          </div>
+        </article>
+        <article class="card">
+          <div class="icon">🧹</div>
+          <div>
+            <h3>Desbroce y limpieza</h3>
+            <p class="muted">Desbroces de fincas, control de malas hierbas y puesta a punto de jardines y comunidades.</p>
+          </div>
+        </article>
+        <article class="card">
+          <div class="icon">🫛</div>
+          <div>
+            <h3>Mantenimiento integral</h3>
+            <p class="muted">Corte de césped, abonados, escarificado, riegos, control fitosanitario y calendario estacional.</p>
+          </div>
+        </article>
+        <article class="card">
+          <div class="icon">💧</div>
+          <div>
+            <h3>Riego automático</h3>
+            <p class="muted">Instalación y revisión de sistemas de riego con primeras marcas. Programación eficiente.</p>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- Bloques destacados (inspirados en secciones internas) -->
+  <section class="beige">
+    <div class="container feature">
+      <div>
+        <h2>Jardines funcionales y de bajo mantenimiento</h2>
+        <p>Nos adaptamos a tu espacio y a tu presupuesto para crear zonas verdes bonitas y prácticas durante todo el año.</p>
+        <ul class="list">
+          <li>Selección de especies resistentes a tu clima</li>
+          <li>Césped natural o alternativas de bajo consumo</li>
+          <li>Soluciones de drenaje y riego optimizado</li>
+        </ul>
+      </div>
+      <img src="https://images.unsplash.com/photo-1523419409543-8a7f71b3a9a0?q=80&w=1200&auto=format&fit=crop" alt="Jardín de bajo mantenimiento" />
+    </div>
+  </section>
+
+  <section>
+    <div class="container feature reverse">
+      <img src="https://images.unsplash.com/photo-1501004318641-b39e6451bec6?q=80&w=1200&auto=format&fit=crop" alt="Poda en altura" />
+      <div>
+        <h2>Poda y tala con seguridad</h2>
+        <p>Equipo cualificado y medios mecánicos para trabajos de altura. Retiramos y gestionamos los restos.</p>
+        <ul class="list">
+          <li>Poda de formación y saneamiento</li>
+          <li>Tala de ejemplares peligrosos</li>
+          <li>Informes y asesoramiento</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- Galería -->
+  <section id="trabajos">
+    <div class="container">
+      <div class="section-head">
+        <h2>Trabajos recientes</h2>
+        <span class="muted">Antes / después</span>
+      </div>
+      <div class="gallery">
+        <img src="https://images.unsplash.com/photo-1592841200221-9c9d7560d9b1?q=80&w=1200&auto=format&fit=crop" alt="Césped recién cortado" />
+        <img src="https://images.unsplash.com/photo-1505575972945-2804b56ba39f?q=80&w=1200&auto=format&fit=crop" alt="Seto recortado" />
+        <img src="https://images.unsplash.com/photo-1496661415325-ef852f9e8e7c?q=80&w=1200&auto=format&fit=crop" alt="Rocalla con flores" />
+        <img src="https://images.unsplash.com/photo-1499951360447-b19be8fe80f5?q=80&w=1200&auto=format&fit=crop" alt="Detalle de jardín" />
+      </div>
+    </div>
+  </section>
+
+  <!-- Sobre nosotros -->
+  <section id="sobre" style="background:var(--beige)">
+    <div class="container feature">
+      <div>
+        <h2>Sobre nosotros</h2>
+        <p>Somos <strong>[Tu Marca]</strong>, jardineros en <strong>[Tu Ciudad]</strong> con <strong>[X] años</strong> de experiencia. Nos gusta trabajar bien, a tiempo y dejarlo todo limpio. Nuestro objetivo es que disfrutes tu jardín sin complicaciones.</p>
+        <p class="muted">Damos servicio a viviendas, comunidades y empresas en [Zonas de servicio].</p>
+      </div>
+      <img src="https://images.unsplash.com/photo-1607546944281-39e96bdb1fad?q=80&w=1200&auto=format&fit=crop" alt="Equipo de jardinería" />
+    </div>
+  </section>
+
+  <!-- Contacto -->
+  <section id="contacto">
+    <div class="container">
+      <div class="section-head">
+        <h2>Contacto y presupuesto</h2>
+        <a class="cta" data-wa target="_blank" rel="noopener">Escribir por WhatsApp</a>
+      </div>
+      <form onsubmit="alert('Este formulario es de ejemplo. Conéctalo a tu email o Google Forms.'); return false;">
+        <div class="grid" style="grid-template-columns:repeat(12,1fr);gap:1rem">
+          <div style="grid-column:span 12;"> <input required placeholder="Tu nombre" /> </div>
+          <div style="grid-column:span 6;"> <input type="tel" placeholder="Teléfono" /> </div>
+          <div style="grid-column:span 6;"> <input type="email" placeholder="Email" /> </div>
+          <div style="grid-column:span 12;"> <textarea rows="5" placeholder="Cuéntanos qué necesitas"></textarea> </div>
         </div>
-      </section>
+        <label class="legal"><input type="checkbox" required> Acepto el aviso legal y la política de privacidad.</label>
+        <div class="actions"><button class="btn btn-primary" type="submit">Enviar</button></div>
+      </form>
+    </div>
+  </section>
 
-      <footer>Persistencia en <em>LocalStorage</em>. Cálculo sin decimales (truncado). El primer tramo puede ser "absoluto"; el resto usan %.</footer>
-    </section>
-  </div>
-
-  <script>
-    const $ = s => document.querySelector(s);
-    const nf = new Intl.NumberFormat('es-ES', { maximumFractionDigits: 0 });
-    const fmt = n => nf.format(n) + ' \u20AC';
-
-    // ----- Tiers (tramos) dinámicos -----
-    // type: 'abs' (importe fijo) o 'pct' (porcentaje)
-    const DEFAULT_TIERS = [
-      { min: 0, max: 1_000_000, type: 'abs', value: 1_000_000 },
-      { min: 1_000_001, max: 3_000_000, type: 'pct', value: 130 },
-      { min: 3_000_001, max: 5_000_000, type: 'pct', value: 120 },
-      { min: 5_000_001, max: 15_000_000, type: 'pct', value: 115 },
-      { min: 15_000_001, max: Infinity, type: 'pct', value: 110 },
-    ];
-
-    function loadTiers(){
-      try{
-        const raw = localStorage.getItem('clausulasTiersV1');
-        if(!raw) return DEFAULT_TIERS.map(t=>({...t}));
-        const arr = JSON.parse(raw);
-        // Revivir Infinity
-        return arr.map(t => ({...t, max: t.max === 'Infinity' ? Infinity : t.max }));
-      }catch{ return DEFAULT_TIERS.map(t=>({...t})); }
-    }
-    function saveTiers(tiers){
-      const serial = tiers.map(t => ({...t, max: t.max === Infinity ? 'Infinity' : t.max}));
-      localStorage.setItem('clausulasTiersV1', JSON.stringify(serial));
-    }
-
-    let TIERS = loadTiers();
-
-    // ----- Utilidades -----
-    function limpiarEntrada(txt){
-      const digits = (txt+"").replace(/\D+/g, "");
-      if(!digits) return NaN;
-      return Number(digits);
-    }
-    function formatInputEl(el){
-      const val = el.value.replace(/\D+/g, '');
-      el.value = val ? nf.format(Number(val)) : '';
-    }
-
-    function findTierIndex(valor){
-      return TIERS.findIndex(t => valor >= t.min && valor <= t.max);
-    }
-
-    function calcClause(valor){
-      const idx = findTierIndex(valor);
-      if(idx === -1) return { clause: NaN, rule: 'Fuera de rango', idx: -1 };
-      const t = TIERS[idx];
-      if(t.type === 'abs'){
-        return { clause: t.value, rule: `T${idx+1}: absoluto`, idx };
-      }
-      const pct = Math.max(100, t.value); // seguridad mínima 100%
-      return { clause: Math.trunc(valor * pct / 100), rule: `T${idx+1}: ${pct}%`, idx };
-    }
-
-    function renderBadges(){
-      const c = $('#badges');
-      c.innerHTML = '';
-      TIERS.forEach((t,i)=>{
-        const maxTxt = t.max === Infinity ? '∞' : nf.format(t.max) + ' €';
-        const typeTxt = t.type === 'abs' ? nf.format(t.value) + ' € (abs)' : t.value + ' %';
-        const div = document.createElement('div');
-        div.className = 'badge';
-        div.textContent = `${nf.format(t.min)} € – ${maxTxt} → ${typeTxt}`;
-        c.appendChild(div);
-      });
-    }
-
-    function renderTable(){
-      const tbody = $('#tiersTable');
-      tbody.innerHTML = '';
-      TIERS.forEach((t,i)=>{
-        const tr = document.createElement('tr');
-        tr.innerHTML = `
-          <td><label><input type="radio" name="tierSel" value="${i}" ${i===0?'disabled':''}></label> T${i+1}</td>
-          <td><input data-k="min" data-i="${i}" type="text" ${i===0?'disabled':''} value="${nf.format(t.min)}"/></td>
-          <td><input data-k="max" data-i="${i}" type="text" ${t.max===Infinity?'disabled':''} value="${t.max===Infinity?'∞':nf.format(t.max)}"/></td>
-          <td>
-            <select data-k="type" data-i="${i}" ${i!==0? '' : 'disabled'}>
-              <option value="abs" ${t.type==='abs'?'selected':''}>Absoluto</option>
-              <option value="pct" ${t.type==='pct'?'selected':''}>Porcentaje</option>
-            </select>
-          </td>
-          <td>
-            <input data-k="value" data-i="${i}" type="number" min="${t.type==='pct'?100:0}" value="${t.value}" />
-          </td>
-          <td>
-            ${i>0 ? '<button class="btn danger" data-action="remove" data-i="'+i+'">Eliminar</button>' : ''}
-          </td>`;
-        tbody.appendChild(tr);
-      });
-
-      // Wire inputs for formatting and updates
-      tbody.querySelectorAll('input[type=text]').forEach(el=>{
-        el.addEventListener('input', ()=>formatInputEl(el));
-        el.addEventListener('blur', onCellCommit);
-      });
-      tbody.querySelectorAll('input[type=number], select').forEach(el=>{
-        el.addEventListener('change', onCellCommit);
-      });
-      tbody.querySelectorAll('button[data-action="remove"]').forEach(btn=>{
-        btn.addEventListener('click', ()=>removeTier(parseInt(btn.dataset.i,10)));
-      });
-    }
-
-    function normalizeTiers(){
-      // Ordenar por min, asegurar contiguidad, corregir solapamientos
-      TIERS.sort((a,b)=>a.min-b.min);
-      for(let i=0;i<TIERS.length;i++){
-        const t = TIERS[i];
-        if(i===0){ t.min = 0; }
-        if(i>0){
-          const prev = TIERS[i-1];
-          t.min = Math.max(t.min, prev.max===Infinity? prev.min : prev.max+1);
-        }
-        if(t.max !== Infinity && t.max < t.min){ t.max = t.min; }
-      }
-      // Asegurar último infinito
-      TIERS[TIERS.length-1].max = Infinity;
-    }
-
-    function onCellCommit(e){
-      const el = e.target;
-      const i = parseInt(el.dataset.i,10);
-      const k = el.dataset.k;
-      const t = TIERS[i];
-      if(k==='type'){
-        t.type = el.value;
-        if(t.type==='pct' && t.value < 100) t.value = 100;
-      } else if(k==='value'){
-        const num = Number(el.value);
-        if(!Number.isFinite(num)) return;
-        if(t.type==='pct') t.value = Math.max(100, Math.trunc(num));
-        else t.value = Math.max(0, Math.trunc(num));
-      } else if(k==='min' || k==='max'){
-        if(el.value.trim()==='∞'){ t.max = Infinity; }
-        else {
-          const num = limpiarEntrada(el.value);
-          if(!Number.isFinite(num)) return;
-          t[k] = Math.trunc(num);
-        }
-      }
-      normalizeTiers();
-      saveTiers(TIERS);
-      renderBadges();
-      renderTable();
-      // Recalcular si hay valor
-      const valor = limpiarEntrada($('#valor').value);
-      if(Number.isFinite(valor)){
-        const { clause, rule } = calcClause(valor);
-        mostrarResultado(clause, rule + ' (actualizado)');
-        syncSliderToTier(valor);
-        previewWithSlider(valor);
-      }
-    }
-
-    function removeTier(i){
-      if(i<=0 || i>=TIERS.length-1) return; // no borrar primero ni último
-      if(!confirm('¿Eliminar este tramo? Los vecinos se ajustarán para cubrir el hueco.')) return;
-      TIERS.splice(i,1);
-      normalizeTiers();
-      saveTiers(TIERS);
-      renderBadges();
-      renderTable();
-    }
-
-    function splitTierAtValue(splitVal){
-      // Busca el tramo que contiene splitVal y lo divide en dos
-      const idx = findTierIndex(splitVal);
-      if(idx<=0){ alert('Selecciona un valor dentro de un tramo porcentual (no el absoluto).'); return; }
-      const t = TIERS[idx];
-      if(t.max === Infinity){
-        // dividir creando un penúltimo y último
-        const left = { ...t, max: splitVal };
-        const right = { ...t, min: splitVal+1, max: Infinity };
-        TIERS.splice(idx, 1, left, right);
-      } else {
-        const left = { ...t, max: splitVal };
-        const right = { ...t, min: splitVal+1, max: t.max };
-        TIERS.splice(idx, 1, left, right);
-      }
-      normalizeTiers();
-      saveTiers(TIERS);
-      renderBadges();
-      renderTable();
-    }
-
-    function renderSelection(){
-      // Marca en la tabla el tramo actual según el valor introducido
-      const valor = limpiarEntrada($('#valor').value);
-      const idx = Number.isFinite(valor) ? findTierIndex(valor) : -1;
-      document.querySelectorAll('input[name="tierSel"]').forEach((r,i)=>{
-        r.checked = (i===idx);
-      });
-      return idx;
-    }
-
-    // ----- UI principal -----
-    function mostrarResultado(clause, rule){
-      $('#clausula').textContent = fmt(clause);
-      $('#regla').textContent = rule;
-      $('#out').hidden = false;
-    }
-
-    function syncSliderToTier(valor){
-      const idx = findTierIndex(valor);
-      if(idx<0) return;
-      const t = TIERS[idx];
-      const pct = t.type==='pct' ? t.value : 100;
-      $('#slider').value = Math.max(100, pct);
-      $('#sliderVal').textContent = Math.max(100, pct);
-      $('#pctActual').textContent = (t.type==='pct'? t.value+' %' : '—');
-      $('#tramoActual').textContent = `T${idx+1}`;
-    }
-
-    function previewWithSlider(valor){
-      const idx = findTierIndex(valor);
-      if(idx<0) { $('#preview').textContent = '—'; return; }
-      const t = TIERS[idx];
-      let c = t.type==='abs' ? t.value : Math.trunc(valor * Math.max(100, Number($('#slider').value)) / 100);
-      $('#preview').textContent = fmt(c);
-    }
-
-    function calcular(){
-      const entrada = $('#valor').value;
-      const valor = limpiarEntrada(entrada);
-      if(!Number.isFinite(valor)){
-        $('#out').hidden = false;
-        $('#clausula').textContent = 'Entrada no válida';
-        $('#regla').textContent = '';
-        $('#clausula').classList.add('bad');
-        return;
-      }
-      $('#clausula').classList.remove('bad');
-      const { clause, rule } = calcClause(valor);
-      mostrarResultado(clause, rule);
-      syncSliderToTier(valor);
-      previewWithSlider(valor);
-      renderSelection();
-    }
-
-    // Eventos
-    $('#calc').addEventListener('click', calcular);
-    $('#reset').addEventListener('click', () => {
-      $('#valor').value = '';
-      $('#out').hidden = true;
-      $('#clausula').textContent = '';
-      $('#regla').textContent = '';
-      $('#preview').textContent = '—';
-      $('#pctActual').textContent = '—';
-      $('#tramoActual').textContent = '—';
-      $('#valor').focus();
-      renderSelection();
-    });
-    $('#valor').addEventListener('keydown', e => { if(e.key === 'Enter') calcular(); });
-    $('#valor').addEventListener('input', () => {
-      formatInputEl($('#valor'));
-      const valor = limpiarEntrada($('#valor').value);
-      if(Number.isFinite(valor)){
-        previewWithSlider(valor);
-        syncSliderToTier(valor);
-        renderSelection();
-      } else {
-        $('#preview').textContent = '—';
-      }
-    });
-
-    $('#slider').addEventListener('input', () => {
-      const valor = limpiarEntrada($('#valor').value);
-      $('#sliderVal').textContent = $('#slider').value;
-      if(Number.isFinite(valor)) previewWithSlider(valor);
-    });
-
-    $('#guardar').addEventListener('click', () => {
-      const valor = limpiarEntrada($('#valor').value);
-      const idx = Number.isFinite(valor) ? findTierIndex(valor) : -1;
-      if(idx<=0){ alert('Selecciona un valor que esté en un tramo porcentual.'); return; }
-      const pct = Math.max(100, Number($('#slider').value));
-      TIERS[idx].type = 'pct';
-      TIERS[idx].value = pct;
-      saveTiers(TIERS);
-      renderBadges();
-      renderTable();
-      if(Number.isFinite(valor)){
-        const { clause, rule } = calcClause(valor);
-        mostrarResultado(clause, rule + ' (guardado)');
-      }
-    });
-
-    $('#defaultsBtn').addEventListener('click', () => {
-      if(!confirm('¿Restaurar tramos por defecto?')) return;
-      TIERS = DEFAULT_TIERS.map(t=>({...t}));
-      saveTiers(TIERS);
-      renderBadges();
-      renderTable();
-      const valor = limpiarEntrada($('#valor').value);
-      if(Number.isFinite(valor)){
-        const { clause, rule } = calcClause(valor);
-        mostrarResultado(clause, rule + ' (restaurado)');
-        syncSliderToTier(valor);
-        previewWithSlider(valor);
-      }
-    });
-
-    $('#splitBtn').addEventListener('click', () => {
-      const val = limpiarEntrada($('#splitValue').value);
-      if(!Number.isFinite(val)){ alert('Introduce un valor válido para dividir.'); return; }
-      splitTierAtValue(val);
-      $('#splitValue').value = '';
-    });
-
-    // Inicialización
-    function init(){
-      renderBadges();
-      renderTable();
-      $('#valor').focus();
-    }
-    window.addEventListener('DOMContentLoaded', init);
-  </script>
+  <!-- Footer -->
+  <footer>
+    <div class="container foot">
+      <div>
+        <div class="brand"><span class="leaf"></span><span>[Tu Marca]</span></div>
+        <p style="margin:.6rem 0">Jardinería en [Tu Ciudad] – Mantenimiento, podas, desbroces y riego automático.</p>
+        <p>Tel.: <a href="tel:+34999999999">+34 999 999 999</a> · Email: <a href="mailto:info@tu-marca.com">info@tu-marca.com</a></p>
+      </div>
+      <div>
+        <h4>Secciones</h4>
+        <p><a href="#servicios">Servicios</a><br><a href="#trabajos">Trabajos</a><br><a href="#sobre">Sobre nosotros</a><br><a href="#contacto">Contacto</a></p>
+      </div>
+      <div>
+        <h4>Legal</h4>
+        <p><a href="#">Aviso legal</a><br><a href="#">Política de privacidad</a><br><a href="#">Cookies</a></p>
+      </div>
+    </div>
+    <div style="text-align:center;padding:12px 0;border-top:1px solid #174a1c">© <span id="year"></span> [Tu Marca]. Todos los derechos reservados.</div>
+  </footer>
+  <script>document.getElementById('year').textContent = new Date().getFullYear()</script>
 </body>
 </html>
+
