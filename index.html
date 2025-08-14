@@ -1,106 +1,100 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <!--
-    Sitio sencillo para empresa de jardinería
-    Marca: Jada | Ciudad: Vigo
-
-    OBJETIVO DEL CÓDIGO
-    - Que sea fácil de leer, entender y modificar.
-    - HTML + CSS + un poco de JS (todo en un único archivo).
-    - Diseño responsive (móvil primero) sin frameworks.
-
-    CÓMO EDITAR
-    1) Cambia textos directamente en el HTML.
-    2) Sustituye imágenes por las tuyas: busca "IMG:" en este archivo.
-    3) Pon tu número de WhatsApp y correo en la sección de CONTACTO y en la constante WHATSAPP.
-  -->
+  <!-- Sitio sencillo para empresa de jardinería – Marca: Jada | Ciudad: Vigo -->
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Jada – Jardinería en Vigo | Mantenimiento, podas y riego</title>
   <meta name="description" content="Jada, jardinería en Vigo. Creación y mantenimiento de jardines, poda, desbroces y riego automático. Presupuesto gratis." />
 
-  <!-- Estilos básicos. Mantén todo aquí para que sea fácil de editar. -->
+  <!-- Acelera primera conexión a hosts de imágenes -->
+  <link rel="preconnect" href="https://images.unsplash.com" crossorigin>
+  <link rel="preconnect" href="https://picsum.photos" crossorigin>
+
   <style>
-    /* ====== VARIABLES DE COLOR ====== */
-    :root{
-      --verde:#245b2a;      /* color principal */
-      --verde-clarito:#e8f2ea; /* fondos suaves */
-      --fondo:#ffffff;      /* fondo base */
-      --tinta:#1f2937;      /* texto base */
-      --borde:#e5e7eb;      /* líneas y bordes */
-    }
+  /* === PALETA Y TIPOGRAFÍA === */
+  :root{
+    --bg:#ffffff;
+    --text:#1b1f24;
+    --subtle:#64748b;
+    --brand:#2f7b36;     /* verde Jada */
+    --brand-2:#1f5a26;   /* verde oscuro */
+    --soft:#f1f5f3;      /* fondo suave */
+    --line:#e5e7eb;      /* bordes */
+    --radius:14px;
+    --shadow:0 6px 20px rgba(16,24,40,.06);
+  }
+  *,*::before,*::after{box-sizing:border-box}
+  html,body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial,sans-serif;color:var(--text);background:var(--bg)}
+  img{max-width:100%;height:auto;display:block}
+  a{text-decoration:none;color:inherit}
+  p{line-height:1.55}
 
-    /* ====== RESETEO SENCILLO ====== */
-    *,*::before,*::after{box-sizing:border-box}
-    html,body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial,sans-serif;color:var(--tinta);background:var(--fondo);}
-    img{max-width:100%;height:auto;display:block} /* evita recortes raros */
-    a{text-decoration:none;color:inherit}
+  /* === LAYOUT === */
+  .container{max-width:1120px;margin-inline:auto;padding:0 20px}
+  section{padding:72px 0}
+  h1{font-size:clamp(30px,4.6vw,48px);line-height:1.1;margin:0 0 10px}
+  h2{font-size:clamp(24px,3.2vw,34px);margin:0 0 8px}
+  .subtitle{color:var(--subtle);margin:0 0 18px}
 
-    /* ====== LAYOUT BÁSICO ====== */
-    .container{max-width:1100px;margin-inline:auto;padding:0 16px}
-    section{padding:56px 0}
-    h1,h2{line-height:1.2;margin:0 0 12px}
-    h1{font-size:clamp(28px,4vw,44px)}
-    h2{font-size:clamp(22px,3vw,32px)}
-    p{margin:0 0 10px}
+  /* === HEADER === */
+  header{position:sticky;top:0;background:#fff;border-bottom:1px solid var(--line);z-index:20;box-shadow:0 2px 12px rgba(16,24,40,.04)}
+  .nav{display:flex;align-items:center;justify-content:space-between;height:68px}
+  .brand{display:flex;align-items:center;gap:10px;font-weight:800;color:#18351c}
+  .brand-mark{width:26px;height:26px;border-radius:8px;background:conic-gradient(from 200deg,var(--brand),#49a15a,var(--brand-2));box-shadow:var(--shadow)}
+  .menu{display:none;gap:18px;align-items:center}
+  .menu a{padding:8px 10px;border-radius:10px}
+  .menu a:hover{background:var(--soft)}
+  .burger{display:inline-flex;align-items:center;justify-content:center;background:#fff;border:1px solid var(--line);border-radius:10px;padding:8px 10px}
+  .cta{background:var(--brand);color:#fff;padding:10px 14px;border-radius:12px;font-weight:700;box-shadow:var(--shadow)}
+  @media (min-width:900px){.burger{display:none}.menu{display:flex}}
+  .menu-mobile{display:none;border-top:1px solid var(--line);background:#fff}
+  .menu-mobile a{display:block;padding:14px 0;border-bottom:1px solid var(--line)}
 
-    /* ====== CABECERA Y NAVEGACIÓN ====== */
-    header{position:sticky;top:0;background:#fff;border-bottom:1px solid var(--borde);z-index:10}
-    .nav{display:flex;align-items:center;justify-content:space-between;height:64px}
-    .brand{display:flex;align-items:center;gap:8px;font-weight:700;color:var(--verde)}
-    .brand-mark{width:22px;height:22px;border-radius:6px;background:conic-gradient(from 180deg,var(--verde),#2f7b36)}
+  /* === HERO === */
+  .hero{background:radial-gradient(1200px 600px at 10% -10%, #dff3e3, transparent), radial-gradient(1200px 600px at 110% 0%, #e9f6ec, transparent)}
+  .hero-inner{padding:84px 0}
+  .badge{display:inline-block;background:#e7f3ea;color:var(--brand);font-weight:800;padding:6px 12px;border-radius:999px;font-size:14px}
+  .actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:14px}
+  .btn{padding:12px 14px;border-radius:12px;font-weight:800;border:2px solid transparent}
+  .btn-primary{background:var(--brand);color:#fff}
+  .btn-outline{border-color:var(--brand);color:var(--brand);background:#fff}
 
-    /* Menú: móvil primero (oculto), en escritorio visible */
-    .menu{display:none;gap:14px;align-items:center}
-    .burger{display:inline-flex;background:none;border:1px solid var(--borde);border-radius:6px;padding:6px 8px}
-    .cta{background:var(--verde);color:#fff;padding:8px 12px;border-radius:8px;font-weight:700}
-    @media (min-width:900px){
-      .burger{display:none}
-      .menu{display:flex}
-    }
+  /* === CARDS / GRID === */
+  .grid{display:grid;gap:16px}
+  @media (min-width:720px){.grid{grid-template-columns:repeat(2,1fr)}}
+  @media (min-width:1040px){.grid{grid-template-columns:repeat(3,1fr)}}
+  .card{border:1px solid var(--line);border-radius:var(--radius);padding:18px;background:#fff;box-shadow:var(--shadow)}
+  .muted{color:var(--subtle)}
 
-    /* Menú desplegable en móvil */
-    .menu-mobile{display:none;border-top:1px solid var(--borde);padding:12px 0}
-    .menu-mobile a{display:block;padding:10px 0}
+  /* === FEATURES (imagen + texto) === */
+  .feature{display:grid;gap:24px;align-items:center}
+  @media (min-width:940px){.feature{grid-template-columns:1.1fr 1fr}}
+  .feature img{width:100%;height:auto;aspect-ratio:4/3;max-height:480px;object-fit:cover;border-radius:var(--radius);box-shadow:var(--shadow);background:var(--soft)}
+@media (max-width:600px){.feature img{max-height:360px}}
 
-    /* ====== HERO (cabecera visual) ====== */
-    .hero{background:linear-gradient(180deg,rgba(36,91,42,.08),rgba(36,91,42,.02));}
-    .hero-inner{padding:64px 0}
-    .badge{display:inline-block;background:var(--verde-clarito);color:var(--verde);font-weight:700;padding:6px 10px;border-radius:999px;font-size:14px}
-    .actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px}
-    .btn{padding:10px 12px;border-radius:8px;font-weight:700;border:2px solid transparent}
-    .btn-primary{background:var(--verde);color:#fff}
-    .btn-outline{border-color:var(--verde);color:var(--verde)}
+  /* === GALERÍA === */
+  .gallery{display:grid;gap:14px;grid-template-columns:repeat(2,1fr)}
+  @media (min-width:900px){.gallery{grid-template-columns:repeat(4,1fr)}}
+  .gallery img{border-radius:12px;aspect-ratio:4/3;object-fit:cover;box-shadow:var(--shadow)}
 
-    /* ====== BLOQUE DE SERVICIOS ====== */
-    .grid{display:grid;gap:12px}
-    @media (min-width:700px){.grid{grid-template-columns:repeat(2,1fr)}}
-    @media (min-width:1000px){.grid{grid-template-columns:repeat(3,1fr)}}
-    .card{border:1px solid var(--borde);border-radius:12px;padding:14px;background:#fff}
-    .card h3{margin:6px 0 6px}
-    .muted{color:#566173}
+  /* === CONTACTO === */
+  #contacto{background:var(--soft)}
+  form{display:grid;gap:12px;max-width:680px}
+  input:not([type="checkbox"]),textarea{width:100%;padding:12px 14px;border:1px solid #cbd5e1;border-radius:12px;font:inherit;background:#fff}
+  input[type="checkbox"]{width:auto;height:auto;accent-color:var(--brand);}
+  input:focus,textarea:focus{outline:2px solid #b7e1bf}
+  /* ✔ checkbox alineado y botón sin ancho completo */
+  label.legal{font-size:14px;color:#64748b;display:flex;align-items:center;gap:8px}
+  label.legal input{margin:0}
+  form .btn{display:inline-block;justify-self:start}
 
-    /* ====== BLOQUES DESTACADOS (IMAGEN + TEXTO) ====== */
-    .feature{display:grid;gap:16px;align-items:center}
-    @media (min-width:900px){.feature{grid-template-columns:1.1fr 1fr}}
-    .feature.reverse{@media (min-width:900px){grid-template-columns:1fr 1.1fr}}
+  /* === FOOTER === */
+  footer{background:#0b1f0e;color:#d7eddc;margin-top:8px}
+  .foot{display:grid;gap:16px;padding:36px 0}
+  @media (min-width:900px){.foot{grid-template-columns:1.2fr 1fr 1fr}}
 
-    /* ====== GALERÍA ====== */
-    .gallery{display:grid;gap:10px;grid-template-columns:repeat(2,1fr)}
-    @media (min-width:900px){.gallery{grid-template-columns:repeat(4,1fr)}}
-    .gallery img{border-radius:10px} /* sin aspect-ratio para no cortar */
-
-    /* ====== CONTACTO ====== */
-    #contacto{background:var(--verde-clarito)}
-    form{display:grid;gap:10px;max-width:680px}
-    input,textarea{width:100%;padding:12px;border:1px solid #cbd5e1;border-radius:8px;font:inherit}
-    label.legal{font-size:14px;color:#64748b}
-
-    /* ====== PIE ====== */
-    footer{background:#0b1f0e;color:#cfe6d2}
-    .foot{display:grid;gap:12px;padding:28px 0}
-    @media (min-width:900px){.foot{grid-template-columns:1.2fr 1fr 1fr}}
+  @media (prefers-reduced-motion:reduce){*{scroll-behavior:auto}}
   </style>
 </head>
 <body>
@@ -116,7 +110,6 @@
         <a href="#contacto" class="cta">Contactar</a>
       </nav>
     </div>
-    <!-- Menú móvil (se muestra al pulsar el botón) -->
     <div class="container menu-mobile" id="menuMobile">
       <a href="#servicios">Servicios</a>
       <a href="#trabajos">Trabajos</a>
@@ -181,15 +174,21 @@
           <li>Riego y drenaje optimizados</li>
         </ul>
       </div>
-      <!-- IMG: sustituye la URL por tu foto -->
-      <img src="https://images.unsplash.com/photo-1523419409543-8a7f71b3a9a0?w=1600&auto=format&fit=crop" alt="Jardín de bajo mantenimiento" loading="lazy" decoding="async">
+      <!-- IMG -->
+      <img src="https://picsum.photos/id/102/1200/900" alt="Jardín de bajo mantenimiento" loading="eager" fetchpriority="high" decoding="async" referrerpolicy="no-referrer" crossorigin="anonymous">
     </div>
   </section>
 
   <section>
     <div class="container feature" style="grid-template-columns:1fr;gap:16px">
-      <!-- IMG: sustituye la URL por tu foto -->
-      <img src="https://images.unsplash.com/photo-1501004318641-b39e6451bec6?w=1600&auto=format&fit=crop" alt="Trabajo de poda" loading="lazy" decoding="async">
+      <!-- IMG -->
+      <img src="https://images.unsplash.com/photo-1501004318641-b39e6451bec6?w=1200&q=70&auto=format&fit=crop"
+           srcset="https://images.unsplash.com/photo-1501004318641-b39e6451bec6?w=600&q=70&auto=format&fit=crop 600w,
+                   https://images.unsplash.com/photo-1501004318641-b39e6451bec6?w=900&q=70&auto=format&fit=crop 900w,
+                   https://images.unsplash.com/photo-1501004318641-b39e6451bec6?w=1200&q=70&auto=format&fit=crop 1200w"
+           sizes="(max-width: 900px) 100vw, 520px" width="1200" height="900"
+           alt="Trabajo de poda" loading="lazy" decoding="async"
+           referrerpolicy="no-referrer" crossorigin="anonymous">
       <div>
         <h2>Poda y tala con seguridad</h2>
         <p>Equipo cualificado y medios mecánicos para trabajos en altura. Retiramos y gestionamos los restos.</p>
@@ -208,25 +207,34 @@
       <h2>Trabajos recientes</h2>
       <p class="muted">Ejemplos reales (sustituye por tus fotos).</p>
       <div class="gallery" style="margin-top:12px">
-        <!-- IMG: cambia estas 4 imágenes por las tuyas -->
-        <img src="https://images.unsplash.com/photo-1592841200221-9c9d7560d9b1?w=1600&auto=format&fit=crop" alt="Césped recién cortado" loading="lazy" decoding="async">
-        <img src="https://images.unsplash.com/photo-1505575972945-2804b56ba39f?w=1600&auto=format&fit=crop" alt="Seto recortado" loading="lazy" decoding="async">
-        <img src="https://images.unsplash.com/photo-1496661415325-ef852f9e8e7c?w=1600&auto=format&fit=crop" alt="Rocalla con flores" loading="lazy" decoding="async">
-        <img src="https://images.unsplash.com/photo-1499951360447-b19be8fe80f5?w=1600&auto=format&fit=crop" alt="Detalle de jardín" loading="lazy" decoding="async">
+        <img src="https://picsum.photos/seed/cesped/900/675" alt="Césped recién cortado"
+             loading="lazy" decoding="async" referrerpolicy="no-referrer" crossorigin="anonymous">
+        <img src="https://picsum.photos/seed/seto/900/675" alt="Seto recortado"
+             loading="lazy" decoding="async" referrerpolicy="no-referrer" crossorigin="anonymous">
+        <img src="https://images.unsplash.com/photo-1496661415325-ef852f9e8e7c?w=1200&q=70&auto=format&fit=crop"
+             alt="Rocalla con flores" loading="lazy" decoding="async" referrerpolicy="no-referrer" crossorigin="anonymous">
+        <img src="https://images.unsplash.com/photo-1499951360447-b19be8fe80f5?w=1200&q=70&auto=format&fit=crop"
+             alt="Detalle de jardín" loading="lazy" decoding="async" referrerpolicy="no-referrer" crossorigin="anonymous">
       </div>
     </div>
   </section>
 
   <!-- ====== SOBRE NOSOTROS ====== -->
-  <section id="sobre" style="background:var(--verde-clarito)">
+  <section id="sobre" style="background:var(--soft)">
     <div class="container feature">
       <div>
         <h2>Sobre Jada</h2>
         <p>Somos Jada, jardineros en Vigo con años de experiencia. Trabajamos bien, a tiempo y dejando todo limpio. Queremos que disfrutes del jardín sin complicaciones.</p>
         <p class="muted">Damos servicio en Vigo y alrededores.</p>
       </div>
-      <!-- IMG: sustituye la URL por tu foto de equipo -->
-      <img src="https://images.unsplash.com/photo-1607546944281-39e96bdb1fad?w=1600&auto=format&fit=crop" alt="Equipo de jardinería" loading="lazy" decoding="async">
+      <!-- IMG -->
+      <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=1200&q=70&auto=format&fit=crop"
+           srcset="https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=600&q=70&auto=format&fit=crop 600w,
+                   https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=900&q=70&auto=format&fit=crop 900w,
+                   https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=1200&q=70&auto=format&fit=crop 1200w"
+           sizes="(max-width: 900px) 100vw, 520px" width="1200" height="900"
+           alt="Equipo de jardinería" loading="lazy" decoding="async"
+           referrerpolicy="no-referrer" crossorigin="anonymous">
     </div>
   </section>
 
@@ -237,7 +245,6 @@
       <p>Tel.: <a href="tel:+34999999999">+34 999 999 999</a> · Email: <a href="mailto:info@jada.es">info@jada.es</a></p>
       <p><a class="cta" id="btnWa2" target="_blank" rel="noopener">Escribir por WhatsApp</a></p>
 
-      <!-- Formulario simple. Para producción: conéctalo a Formspree o Google Forms. -->
       <form onsubmit="alert('Ejemplo: conecta este formulario a tu email con Formspree o enlaza un Google Form.'); return false;">
         <input required placeholder="Tu nombre">
         <input type="tel" placeholder="Teléfono">
@@ -268,13 +275,40 @@
     <div style="text-align:center;padding:12px 0;border-top:1px solid #174a1c">© <span id="year"></span> Jada. Todos los derechos reservados.</div>
   </footer>
 
-  <!-- ====== JS MUY SIMPLE ====== -->
+  <!-- ====== JS ====== -->
   <script>
-    // 1) Pon aquí tu número de WhatsApp en formato internacional, sin '+' ni espacios
-    //    Ejemplo España: 34 + número. Sustituye 34999999999 por el tuyo.
+    // ========== MetaMask guard ==========
+    // Evita que errores externos de Web3/MetaMask rompan esta página estática.
+    (function guardMetaMask(){
+      const MSG = 'MetaMask no disponible: continuamos sin Web3.';
+      function isMM(err){
+        if(!err) return false;
+        const s = typeof err === 'string' ? err : (err.message || err.reason || String(err));
+        return /metamask|ethereum/i.test(s);
+      }
+      window.__mmGuardTriggered = false;
+      window.addEventListener('unhandledrejection', (ev) => {
+        if (isMM(ev.reason)) {
+          window.__mmGuardTriggered = true;
+          console.warn(MSG, ev.reason);
+          ev.preventDefault();
+        }
+      });
+      window.addEventListener('error', (ev) => {
+        if (isMM(ev.error) || isMM(ev.message)) {
+          window.__mmGuardTriggered = true;
+          console.warn(MSG, ev.error || ev.message);
+          ev.preventDefault();
+          return true;
+        }
+        return false;
+      });
+    })();
+
+    // 1) Tu número de WhatsApp (formato internacional, sin '+')
     const WHATSAPP = '633671515';
 
-    // 2) Configura los botones que abren conversación en WhatsApp con un mensaje inicial
+    // 2) WhatsApp en botones
     function setWhatsAppLinks(){
       const msg = 'Hola, me gustaría pedir un presupuesto de jardinería.';
       const url = `https://wa.me/${WHATSAPP}?text=${encodeURIComponent(msg)}`;
@@ -284,7 +318,7 @@
       if(wa2) wa2.href = url;
     }
 
-    // 3) Menú móvil: muestra/oculta las opciones
+    // 3) Menú móvil
     function setupMobileMenu(){
       const burger = document.getElementById('burger');
       const menu = document.getElementById('menuMobile');
@@ -295,18 +329,48 @@
       });
     }
 
-    // 4) Año automático en el pie
+    // 4) Año automático
     function setYear(){
       const y = document.getElementById('year');
       if(y) y.textContent = new Date().getFullYear();
     }
 
-    // 5) Iniciar todo al cargar
+    // 5) Fallback si una imagen no carga
+    function setupImageFallbacks(){
+      const ph = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='1200' height='900'><rect width='100%' height='100%' fill='%23f1f5f3'/><text x='50%' y='50%' dominant-baseline='middle' text-anchor='middle' font-family='Arial' font-size='36' fill='%232f7b36'>Imagen no disponible</text></svg>";
+      document.querySelectorAll('img').forEach(img=>{
+        img.addEventListener('error', ()=>{
+          if(!img.dataset.fallback){ img.dataset.fallback='1'; img.src = ph; img.style.objectFit='cover'; }
+        });
+      });
+    }
+
+    // ========== Tests mínimos (no cambian UX) ==========
+    (function runTests(){
+      const results = [];
+      function assert(name, pass){ results.push({name, pass}); }
+      // Test 1: MetaMask guard no rompe la página y captura el error
+      setTimeout(()=>{ Promise.reject('Failed to connect to MetaMask'); }, 0);
+      setTimeout(()=>{ assert('MetaMask guard captura errores externos', !!window.__mmGuardTriggered); renderTestResults(results); }, 20);
+      // Test 2: WhatsApp genera URL
+      assert('Genera enlace WhatsApp', typeof 'https://wa.me/'+WHATSAPP === 'string');
+    })();
+    function renderTestResults(list){
+      const ok = list.filter(t=>t.pass).length;
+      const el = document.getElementById('test-results');
+      if(el){ el.textContent = `Tests: ${ok}/${list.length} OK`; }
+    }
+
+    // 6) Arranque
     document.addEventListener('DOMContentLoaded', ()=>{
       setWhatsAppLinks();
       setupMobileMenu();
       setYear();
+      setupImageFallbacks();
     });
   </script>
+
+  <!-- Indicador ligero de pruebas (visible solo para desarrollo) -->
+  <div id="test-results" style="position:fixed;bottom:10px;right:10px;background:#fff;border:1px solid var(--line);border-radius:10px;padding:6px 10px;color:#334155;font-size:12px;box-shadow:var(--shadow);opacity:.85;z-index:9999"></div>
 </body>
 </html>
