@@ -1,44 +1,77 @@
 <!DOCTYPE html>
+<!--
+  ==========================================================
+  Sitio de ejemplo para una empresa de jardinería (Jada)
+  Objetivo de estos COMENTARIOS:
+  - Explicar para principiantes qué hace cada parte.
+  - Para modificar textos: cambia el contenido entre etiquetas <p>, <h1>, etc.
+  - Para colores: modifica las variables CSS en :root (más abajo).
+  - Para ocultar/mostrar secciones: borra o comenta el bloque HTML correspondiente.
+  ==========================================================
+-->
 <html lang="es">
 <head>
-  <!-- Sitio sencillo para empresa de jardinería – Marca: Jada | Ciudad: Vigo -->
+  <!-- Codificación de caracteres (tildes y eñes correctas) -->
   <meta charset="utf-8" />
+  <!-- Hace que la web se adapte al móvil correctamente -->
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <!-- Título que verás en la pestaña del navegador -->
   <title>Jada – Jardinería en Vigo | Mantenimiento, podas y riego</title>
+  <!-- Breve descripción para Google -->
   <meta name="description" content="Jada, jardinería en Vigo. Creación y mantenimiento de jardines, poda, desbroces y riego automático. Presupuesto gratis." />
 
-  <!-- Acelera primera conexión a hosts de imágenes -->
+  <!--
+    PRECONEXIONES: un pequeño truco de rendimiento.
+    Avisamos al navegador de que vamos a bajar imágenes de estos dominios,
+    para que “caliente” la conexión antes.
+  -->
   <link rel="preconnect" href="https://images.unsplash.com" crossorigin>
   <link rel="preconnect" href="https://picsum.photos" crossorigin>
 
+  <!--
+    ================
+    ESTILOS (CSS)
+    ================
+    Notas:
+    - Todo el diseño está aquí para que sea fácil de encontrar y editar.
+    - Si quieres cambiar colores, bordes o sombras, empieza por las variables de :root.
+  -->
   <style>
-  /* === PALETA Y TIPOGRAFÍA === */
+  /* ---------------------------
+     1) Variables de marca (colores, sombras, radios…)
+     Puedes cambiar el verde de marca en --brand y --brand-2
+  --------------------------- */
   :root{
-    --bg:#ffffff;
-    --text:#1b1f24;
-    --subtle:#64748b;
-    --brand:#2f7b36;     /* verde Jada */
-    --brand-2:#1f5a26;   /* verde oscuro */
-    --soft:#f1f5f3;      /* fondo suave */
-    --line:#e5e7eb;      /* bordes */
-    --radius:14px;
-    --shadow:0 6px 20px rgba(16,24,40,.06);
+    --bg:#ffffff;      /* color de fondo general */
+    --text:#1b1f24;    /* color principal del texto */
+    --subtle:#64748b;  /* texto “secundario” o aclaraciones */
+    --brand:#2f7b36;   /* verde Jada */
+    --brand-2:#1f5a26; /* verde oscuro */
+    --soft:#f1f5f3;    /* gris/verde muy claro para fondos suaves */
+    --line:#e5e7eb;    /* gris claro para líneas/bordes */
+    --radius:14px;     /* redondeado por defecto de tarjetas e imágenes */
+    --shadow:0 6px 20px rgba(16,24,40,.06); /* sombra suave */
   }
+
+  /* 2) Ajustes básicos (no toques si no es necesario) */
   *,*::before,*::after{box-sizing:border-box}
   html,body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial,sans-serif;color:var(--text);background:var(--bg)}
-  img{max-width:100%;height:auto;display:block}
-  a{text-decoration:none;color:inherit}
+  img{max-width:100%;height:auto;display:block} /* Las imágenes nunca sobresalen de su contenedor */
+  a{text-decoration:none;color:inherit}          /* Los enlaces heredan el color del texto */
   p{line-height:1.55}
 
-  /* === LAYOUT === */
+  /* 3) Contenedor, títulos y separación vertical de secciones */
   .container{max-width:1120px;margin-inline:auto;padding:0 20px}
-  section{padding:72px 0}
+  section{padding:72px 0} /* separa las secciones arriba y abajo */
   h1{font-size:clamp(30px,4.6vw,48px);line-height:1.1;margin:0 0 10px}
   h2{font-size:clamp(24px,3.2vw,34px);margin:0 0 8px}
   .subtitle{color:var(--subtle);margin:0 0 18px}
 
-  /* === HEADER === */
-  header{position:sticky;top:0;background:#fff;border-bottom:1px solid var(--line);z-index:20;box-shadow:0 2px 12px rgba(16,24,40,.04)}
+  /* 4) Cabecera fija con menú */
+  header{
+    position:sticky; top:0; background:#fff; z-index:20;
+    border-bottom:1px solid var(--line); box-shadow:0 2px 12px rgba(16,24,40,.04)
+  }
   .nav{display:flex;align-items:center;justify-content:space-between;height:68px}
   .brand{display:flex;align-items:center;gap:10px;font-weight:800;color:#18351c}
   .brand-mark{width:26px;height:26px;border-radius:8px;background:conic-gradient(from 200deg,var(--brand),#49a15a,var(--brand-2));box-shadow:var(--shadow)}
@@ -47,11 +80,13 @@
   .menu a:hover{background:var(--soft)}
   .burger{display:inline-flex;align-items:center;justify-content:center;background:#fff;border:1px solid var(--line);border-radius:10px;padding:8px 10px}
   .cta{background:var(--brand);color:#fff;padding:10px 14px;border-radius:12px;font-weight:700;box-shadow:var(--shadow)}
+  /* En pantallas grandes mostramos el menú completo y ocultamos el botón “hamburguesa” */
   @media (min-width:900px){.burger{display:none}.menu{display:flex}}
+  /* Menú que se abre en móvil al pulsar el botón */
   .menu-mobile{display:none;border-top:1px solid var(--line);background:#fff}
   .menu-mobile a{display:block;padding:14px 0;border-bottom:1px solid var(--line)}
 
-  /* === HERO === */
+  /* 5) Sección HERO (cabecera visual de la página) */
   .hero{background:radial-gradient(1200px 600px at 10% -10%, #dff3e3, transparent), radial-gradient(1200px 600px at 110% 0%, #e9f6ec, transparent)}
   .hero-inner{padding:84px 0}
   .badge{display:inline-block;background:#e7f3ea;color:var(--brand);font-weight:800;padding:6px 12px;border-radius:999px;font-size:14px}
@@ -60,44 +95,56 @@
   .btn-primary{background:var(--brand);color:#fff}
   .btn-outline{border-color:var(--brand);color:var(--brand);background:#fff}
 
-  /* === CARDS / GRID === */
+  /* 6) Utilidades para tarjetas/rejillas (se usan en varias secciones) */
   .grid{display:grid;gap:16px}
   @media (min-width:720px){.grid{grid-template-columns:repeat(2,1fr)}}
   @media (min-width:1040px){.grid{grid-template-columns:repeat(3,1fr)}}
   .card{border:1px solid var(--line);border-radius:var(--radius);padding:18px;background:#fff;box-shadow:var(--shadow)}
   .muted{color:var(--subtle)}
 
-  /* === FEATURES (imagen + texto) === */
+  /* 7) Bloques “imagen + texto” */
   .feature{display:grid;gap:24px;align-items:center}
   @media (min-width:940px){.feature{grid-template-columns:1.1fr 1fr}}
-  .feature img{width:100%;height:auto;aspect-ratio:4/3;max-height:480px;object-fit:cover;border-radius:var(--radius);box-shadow:var(--shadow);background:var(--soft)}
+  .feature img{
+    width:100%; height:auto; aspect-ratio:4/3; max-height:480px; object-fit:cover;
+    border-radius:var(--radius); box-shadow:var(--shadow); background:var(--soft)
+  }
   @media (max-width:600px){.feature img{max-height:360px}}
 
-  /* === GALERÍA === */
+  /* 8) Galería de trabajos (cuadrícula simple de 2 a 4 columnas) */
   .gallery{display:grid;gap:14px;grid-template-columns:repeat(2,1fr)}
   @media (min-width:900px){.gallery{grid-template-columns:repeat(4,1fr)}}
   .gallery img{border-radius:12px;aspect-ratio:4/3;object-fit:cover;box-shadow:var(--shadow)}
 
-  /* === CONTACTO === */
+  /* 9) Formulario de contacto: estilos básicos y accesibles */
   #contacto{background:var(--soft)}
   form{display:grid;gap:12px;max-width:680px}
-  input:not([type="checkbox"]),textarea{width:100%;padding:12px 14px;border:1px solid #cbd5e1;border-radius:12px;font:inherit;background:#fff}
+  input:not([type="checkbox"]),textarea{
+    width:100%;padding:12px 14px;border:1px solid #cbd5e1;border-radius:12px;font:inherit;background:#fff
+  }
   input[type="checkbox"]{width:auto;height:auto;accent-color:var(--brand);}
   input:focus,textarea:focus{outline:2px solid #b7e1bf}
   label.legal{font-size:14px;color:#64748b;display:flex;align-items:center;gap:8px}
   label.legal input{margin:0}
   form .btn{display:inline-block;justify-self:start}
 
-  /* === FOOTER === */
+  /* 10) Pie de página */
   footer{background:#0b1f0e;color:#d7eddc;margin-top:8px}
   .foot{display:grid;gap:16px;padding:36px 0}
   @media (min-width:900px){.foot{grid-template-columns:1.2fr 1fr 1fr}}
 
+  /* Respeto a usuarios que prefieren menos animaciones */
   @media (prefers-reduced-motion:reduce){*{scroll-behavior:auto}}
 
-  /* ====== NUEVO ESTILO SOLO PARA “SERVICIOS” (como la imagen) ====== */
+  /* ======================================================
+     11) ESTILOS ESPECÍFICOS DE LA SECCIÓN “SERVICIOS”
+         Inspirados en la imagen que mostraste (líneas verdes,
+         iconos centrados y textos bajo cada icono).
+     ====================================================== */
   #servicios { background:#fff; }
   .services-wrap { margin-top:22px; }
+
+  /* “Césped” decorativo arriba y abajo (dos bandas verdes salpicadas) */
   .grass-sep{
     height:10px;
     background:
@@ -105,30 +152,45 @@
       radial-gradient(6px 3px at 60% 50%, var(--brand) 55%, transparent 60%) repeat-x 0 0/120px 10px;
     opacity:.35; border-radius:8px;
   }
+
+  /* Rejilla de servicios: 1 columna en móvil, 3 columnas en pantallas medianas/grandes */
   .services-grid{
     display:grid; gap:36px; padding:28px 8px;
     grid-template-columns:1fr;
-    text-align:center;
+    text-align:center; /* todo centrado para parecerse al diseño de referencia */
   }
   @media (min-width:720px){ .services-grid{ grid-template-columns:repeat(3,1fr);} }
+
+  /* Cada “tarjeta” de servicio */
   .svc-item{display:flex;flex-direction:column;align-items:center;gap:12px;padding:8px 14px}
-  .svc-icon{
-    width:120px;height:120px;color:#a7d46a; /* tono más claro del verde */
-    opacity:0; transform:translateY(10px) scale(.96);
-    transition:opacity .6s ease, transform .6s ease;
-    filter: drop-shadow(0 6px 14px rgba(47,123,54,.15));
-  }
-  .svc-icon.reveal{ opacity:1; transform:none; }
   .svc-title{font-size:20px;margin:8px 0 0}
   .svc-text{max-width:36ch;color:#475569}
+
+  /* Iconos SVG grandes con una ANIMACIÓN sutil al aparecer */
+  .svc-icon{
+    width:120px;height:120px;color:#a7d46a; /* verde clarito para los trazos del icono */
+    opacity:0; transform:translateY(10px) scale(.96); /* estado inicial: un poco abajo y pequeño */
+    transition:opacity .6s ease, transform .6s ease; /* transición suave al entrar */
+    filter: drop-shadow(0 6px 14px rgba(47,123,54,.15)); /* sombra suave bajo el icono */
+  }
+  .svc-icon.reveal{ opacity:1; transform:none; } /* estado final cuando entra en pantalla */
   </style>
 </head>
 <body>
-  <!-- ====== CABECERA ====== -->
+  <!-- =====================================================
+       CABECERA (logo + menú)
+       - El botón “hamburguesa” abre el menú en móviles.
+       - En pantallas grandes, el menú aparece a la derecha.
+  ====================================================== -->
   <header>
     <div class="container nav">
+      <!-- Marca: cuadradito verde + texto “Jada” -->
       <a class="brand" href="#inicio"><span class="brand-mark"></span><span>Jada</span></a>
+
+      <!-- Botón para abrir/cerrar el menú en móviles -->
       <button class="burger" id="burger" aria-label="Abrir menú">☰</button>
+
+      <!-- Menú visible en pantallas grandes -->
       <nav class="menu" aria-label="Principal">
         <a href="#servicios">Servicios</a>
         <a href="#trabajos">Trabajos</a>
@@ -136,6 +198,8 @@
         <a href="#contacto" class="cta">Contactar</a>
       </nav>
     </div>
+
+    <!-- Menú que se abre en móvil al tocar el botón -->
     <div class="container menu-mobile" id="menuMobile">
       <a href="#servicios">Servicios</a>
       <a href="#trabajos">Trabajos</a>
@@ -144,7 +208,12 @@
     </div>
   </header>
 
-  <!-- ====== HERO ====== -->
+  <!-- =====================================================
+       HERO (frase principal + botones de acción)
+       Consejos:
+       - Cambia el texto del <h1> y el párrafo para tu mensaje.
+       - El primer botón se conecta a WhatsApp (ver JS al final).
+  ====================================================== -->
   <section id="inicio" class="hero">
     <div class="container hero-inner">
       <span class="badge">Jardinería en Vigo</span>
@@ -157,16 +226,23 @@
     </div>
   </section>
 
-  <!-- ====== SERVICIOS (ACTUALIZADO) ====== -->
+  <!-- =====================================================
+       SECCIÓN: SERVICIOS (actualizada para parecerse a tu imagen)
+       - Bandas verdes decorativas arriba/abajo.
+       - Iconos SVG (dibujos con líneas) que se animan suavemente
+         cuando aparecen en pantalla.
+  ====================================================== -->
   <section id="servicios">
     <div class="container services-wrap">
       <div class="grass-sep"></div>
+
       <h2 style="text-align:center;margin:20px 0 8px">Servicios de jardinería</h2>
       <p class="muted" style="text-align:center;margin:0 0 18px">Trabajamos en viviendas, comunidades y empresas en Vigo y alrededores.</p>
 
       <div class="services-grid">
-        <!-- Mantenimiento -->
+        <!-- 1) Mantenimiento -->
         <article class="svc-item">
+          <!-- Icono dibujado con SVG. “stroke=currentColor” hace que tome el color CSS .svc-icon -->
           <svg class="svc-icon" viewBox="0 0 120 120" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
             <circle cx="40" cy="68" r="8"></circle>
             <rect x="20" y="72" width="80" height="8" rx="4"></rect>
@@ -176,7 +252,7 @@
           <p class="svc-text">Nuestros profesionales te proporcionarán el mejor mantenimiento.</p>
         </article>
 
-        <!-- Poda y tala -->
+        <!-- 2) Poda y tala -->
         <article class="svc-item">
           <svg class="svc-icon" viewBox="0 0 120 120" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
             <path d="M64 20c-6 16 2 30 18 36M58 32c-10 12-8 28 8 36M60 84V60M44 92h32"></path>
@@ -186,7 +262,7 @@
           <p class="svc-text">Disponemos de medios técnicos y mecánicos para poda y tala de árboles.</p>
         </article>
 
-        <!-- Desbroce -->
+        <!-- 3) Desbroce -->
         <article class="svc-item">
           <svg class="svc-icon" viewBox="0 0 120 120" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
             <path d="M28 84h64M36 72h16l8 12M86 72h8l8 12"></path>
@@ -198,7 +274,7 @@
           <p class="svc-text">Realizamos todo tipo de desbroces con los medios necesarios.</p>
         </article>
 
-        <!-- Creación de jardines -->
+        <!-- 4) Creación de jardines -->
         <article class="svc-item">
           <svg class="svc-icon" viewBox="0 0 120 120" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
             <rect x="26" y="54" width="68" height="36" rx="4"></rect>
@@ -209,7 +285,7 @@
           <p class="svc-text">Jardines funcionales adaptados a tu espacio y presupuesto.</p>
         </article>
 
-        <!-- Riego automático -->
+        <!-- 5) Riego automático -->
         <article class="svc-item">
           <svg class="svc-icon" viewBox="0 0 120 120" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
             <path d="M30 88h60"></path>
@@ -221,7 +297,7 @@
           <p class="svc-text">Instalamos sistemas de riego con marcas de primera calidad.</p>
         </article>
 
-        <!-- Extra: Abonos y césped -->
+        <!-- 6) Extra (opcional): césped y abonos -->
         <article class="svc-item">
           <svg class="svc-icon" viewBox="0 0 120 120" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
             <path d="M32 84h56M40 76l8-20h24l8 20"></path>
@@ -232,11 +308,15 @@
         </article>
       </div>
 
+      <!-- Línea decorativa inferior -->
       <div class="grass-sep" style="margin-top:18px"></div>
     </div>
   </section>
 
-  <!-- ====== BLOQUES DESTACADOS ====== -->
+  <!-- =====================================================
+       SECCIONES INFORMATIVAS (texto + imagen)
+       - Solo cambia los párrafos y/o las imágenes.
+  ====================================================== -->
   <section>
     <div class="container feature">
       <div>
@@ -248,14 +328,13 @@
           <li>Riego y drenaje optimizados</li>
         </ul>
       </div>
-      <!-- IMG -->
+      <!-- Imagen ilustrativa (puedes sustituir la URL por la tuya) -->
       <img src="https://picsum.photos/id/102/1200/900" alt="Jardín de bajo mantenimiento" fetchpriority="high" decoding="async" referrerpolicy="no-referrer" crossorigin="anonymous">
     </div>
   </section>
 
   <section>
     <div class="container feature" style="grid-template-columns:1fr;gap:16px">
-      <!-- IMG -->
       <img src="https://images.unsplash.com/photo-1501004318641-b39e6451bec6?w=1200&q=70&auto=format&fit=crop"
            srcset="https://images.unsplash.com/photo-1501004318641-b39e6451bec6?w=600&q=70&auto=format&fit=crop 600w,
                    https://images.unsplash.com/photo-1501004318641-b39e6451bec6?w=900&q=70&auto=format&fit=crop 900w,
@@ -275,25 +354,26 @@
     </div>
   </section>
 
-  <!-- ====== GALERÍA ====== -->
+  <!-- =====================================================
+       GALERÍA (4 fotos de ejemplo)
+       - Cambia las URLs por tus imágenes reales.
+  ====================================================== -->
   <section id="trabajos">
     <div class="container">
       <h2>Trabajos recientes</h2>
       <p class="muted">Ejemplos reales (sustituye por tus fotos).</p>
       <div class="gallery" style="margin-top:12px">
-        <img src="https://picsum.photos/seed/cesped/900/675" alt="Césped recién cortado"
-             decoding="async" referrerpolicy="no-referrer" crossorigin="anonymous">
-        <img src="https://picsum.photos/seed/seto/900/675" alt="Seto recortado"
-             decoding="async" referrerpolicy="no-referrer" crossorigin="anonymous">
-        <img src="https://images.unsplash.com/photo-1496661415325-ef852f9e8e7c?w=1200&q=70&auto=format&fit=crop"
-             alt="Rocalla con flores" decoding="async" referrerpolicy="no-referrer" crossorigin="anonymous">
-        <img src="https://images.unsplash.com/photo-1499951360447-b19be8fe80f5?w=1200&q=70&auto=format&fit=crop"
-             alt="Detalle de jardín" decoding="async" referrerpolicy="no-referrer" crossorigin="anonymous">
+        <img src="https://picsum.photos/seed/cesped/900/675" alt="Césped recién cortado" decoding="async" referrerpolicy="no-referrer" crossorigin="anonymous">
+        <img src="https://picsum.photos/seed/seto/900/675" alt="Seto recortado" decoding="async" referrerpolicy="no-referrer" crossorigin="anonymous">
+        <img src="https://images.unsplash.com/photo-1496661415325-ef852f9e8e7c?w=1200&q=70&auto=format&fit=crop" alt="Rocalla con flores" decoding="async" referrerpolicy="no-referrer" crossorigin="anonymous">
+        <img src="https://images.unsplash.com/photo-1499951360447-b19be8fe80f5?w=1200&q=70&auto=format&fit=crop" alt="Detalle de jardín" decoding="async" referrerpolicy="no-referrer" crossorigin="anonymous">
       </div>
     </div>
   </section>
 
-  <!-- ====== SOBRE NOSOTROS ====== -->
+  <!-- =====================================================
+       SOBRE NOSOTROS (texto + foto)
+  ====================================================== -->
   <section id="sobre" style="background:var(--soft)">
     <div class="container feature">
       <div>
@@ -301,7 +381,6 @@
         <p>Somos Jada, jardineros en Vigo con años de experiencia. Trabajamos bien, a tiempo y dejando todo limpio. Queremos que disfrutes del jardín sin complicaciones.</p>
         <p class="muted">Damos servicio en Vigo y alrededores.</p>
       </div>
-      <!-- IMG -->
       <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=1200&q=70&auto=format&fit=crop"
            srcset="https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=600&q=70&auto=format&fit=crop 600w,
                    https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=900&q=70&auto=format&fit=crop 900w,
@@ -312,7 +391,11 @@
     </div>
   </section>
 
-  <!-- ====== CONTACTO ====== -->
+  <!-- =====================================================
+       CONTACTO (formulario de ejemplo)
+       - Este formulario solo muestra un aviso. Para enviarlo a Google
+         Forms o a tu email, revisa las instrucciones que te pasé.
+  ====================================================== -->
   <section id="contacto">
     <div class="container">
       <h2>Contacto y presupuesto</h2>
@@ -330,7 +413,9 @@
     </div>
   </section>
 
-  <!-- ====== PIE ====== -->
+  <!-- =====================================================
+       PIE DE PÁGINA (enlaces y aviso)
+  ====================================================== -->
   <footer>
     <div class="container foot">
       <div>
@@ -349,9 +434,20 @@
     <div style="text-align:center;padding:12px 0;border-top:1px solid #174a1c">© <span id="year"></span> Jada. Todos los derechos reservados.</div>
   </footer>
 
-  <!-- ====== JS ====== -->
+  <!--
+    ======================
+    JAVASCRIPT (funciones)
+    ======================
+    Nota: si copias esto a otro proyecto y te aparece un error con MetaMask,
+    este archivo incluye un “guard” (protector) para que errores externos
+    de Web3/MetaMask no rompan la página. Puedes dejarlo tal cual.
+  -->
   <script>
-    // ========== MetaMask guard ==========
+    /* ------------------------------------------------------
+       0) “Guard” de MetaMask / Web3
+       - Si alguna librería externa lanza un error de MetaMask,
+         lo capturamos y evitamos que rompa la web estática.
+    ------------------------------------------------------ */
     (function guardMetaMask(){
       const MSG = 'MetaMask no disponible: continuamos sin Web3.';
       function isMM(err){
@@ -378,10 +474,16 @@
       });
     })();
 
-    // 1) Tu número de WhatsApp (formato internacional, sin '+')
+    /* ------------------------------------------------------
+       1) Tu número de WhatsApp (solo números, sin + ni espacios)
+       - Cambia “633671515” por el tuyo en formato internacional.
+         Ej.: España 34XXXXXXXXX
+    ------------------------------------------------------ */
     const WHATSAPP = '633671515';
 
-    // 2) WhatsApp en botones
+    /* ------------------------------------------------------
+       2) Poner el enlace de WhatsApp en los botones
+    ------------------------------------------------------ */
     function setWhatsAppLinks(){
       const msg = 'Hola, me gustaría pedir un presupuesto de jardinería.';
       const url = `https://wa.me/${WHATSAPP}?text=${encodeURIComponent(msg)}`;
@@ -391,7 +493,11 @@
       if(wa2) wa2.href = url;
     }
 
-    // 3) Menú móvil
+    /* ------------------------------------------------------
+       3) Abrir/cerrar menú móvil
+       - Al pulsar el botón “hamburguesa” mostramos/ocultamos
+         la lista de enlaces vertical.
+    ------------------------------------------------------ */
     function setupMobileMenu(){
       const burger = document.getElementById('burger');
       const menu = document.getElementById('menuMobile');
@@ -402,13 +508,18 @@
       });
     }
 
-    // 4) Año automático
+    /* ------------------------------------------------------
+       4) Poner el año actual en el pie de página automáticamente
+    ------------------------------------------------------ */
     function setYear(){
       const y = document.getElementById('year');
       if(y) y.textContent = new Date().getFullYear();
     }
 
-    // 5) Fallback si una imagen no carga
+    /* ------------------------------------------------------
+       5) Si alguna imagen falla al cargar, mostramos un “placeholder”
+          (un rectángulo con el texto “Imagen no disponible”)
+    ------------------------------------------------------ */
     function setupImageFallbacks(){
       const ph = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='1200' height='900'><rect width='100%' height='100%' fill='%23f1f5f3'/><text x='50%' y='50%' dominant-baseline='middle' text-anchor='middle' font-family='Arial' font-size='36' fill='%232f7b36'>Imagen no disponible</text></svg>";
       document.querySelectorAll('img').forEach(img=>{
@@ -418,22 +529,39 @@
       });
     }
 
-    // 6) Animación de iconos (reveal al entrar en viewport)
+    /* ------------------------------------------------------
+       6) Animación sutil de los iconos de “Servicios”
+          (aparecen con fade + pequeño desplazamiento)
+    ------------------------------------------------------ */
     function revealIcons(){
       const icons = document.querySelectorAll('.svc-icon');
+      // Si el navegador es antiguo, los mostramos sin animación
       if(!('IntersectionObserver' in window)){ icons.forEach(i=>i.classList.add('reveal')); return; }
+      // Con IntersectionObserver detectamos cuándo entran en pantalla
       const io = new IntersectionObserver((entries)=>{
-        entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('reveal'); io.unobserve(e.target);} });
+        entries.forEach(e=>{
+          if(e.isIntersecting){
+            e.target.classList.add('reveal');
+            io.unobserve(e.target); // no repetir la animación
+          }
+        });
       }, {threshold:0.2});
       icons.forEach(el=>io.observe(el));
     }
 
-    // ========== Tests mínimos (no cambian UX) ==========
+    /* ------------------------------------------------------
+       7) Pequeños tests de salud (solo informativos)
+          - No afectan a la web. Muestran un contador en la esquina.
+    ------------------------------------------------------ */
     (function runTests(){
       const results = [];
       function assert(name, pass){ results.push({name, pass}); }
+
+      // Comprobamos que el “guard” de MetaMask no rompe la página
       setTimeout(()=>{ Promise.reject('Failed to connect to MetaMask'); }, 0);
       setTimeout(()=>{ assert('MetaMask guard captura errores externos', !!window.__mmGuardTriggered); renderTestResults(results); }, 20);
+
+      // Comprobamos que generamos un enlace de WhatsApp (prueba tonta)
       assert('Genera enlace WhatsApp', typeof 'https://wa.me/'+WHATSAPP === 'string');
     })();
     function renderTestResults(list){
@@ -442,7 +570,9 @@
       if(el){ el.textContent = `Tests: ${ok}/${list.length} OK`; }
     }
 
-    // 7) Arranque
+    /* ------------------------------------------------------
+       8) Inicialización: ejecutamos todo cuando el documento está listo
+    ------------------------------------------------------ */
     document.addEventListener('DOMContentLoaded', ()=>{
       setWhatsAppLinks();
       setupMobileMenu();
@@ -452,7 +582,10 @@
     });
   </script>
 
-  <!-- Indicador ligero de pruebas (visible solo para desarrollo) -->
+  <!--
+    Pequeño cuadro con el estado de los “tests”.
+    Puedes borrar todo este <div> si no te interesa verlo.
+  -->
   <div id="test-results" style="position:fixed;bottom:10px;right:10px;background:#fff;border:1px solid var(--line);border-radius:10px;padding:6px 10px;color:#334155;font-size:12px;box-shadow:var(--shadow);opacity:.85;z-index:9999"></div>
 </body>
 </html>
